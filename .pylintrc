@@ -1,0 +1,5 @@
+[MESSAGES CONTROL]
+
+# shut the FUCK UP about packages
+# does pipenv mean NOTHING to you
+disable=E0401
