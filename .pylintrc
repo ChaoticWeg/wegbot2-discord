@@ -1,5 +1,2 @@
 [MESSAGES CONTROL]
-
-# shut the FUCK UP about packages
-# does pipenv mean NOTHING to you
-disable=E0401
+disable=E0401,C0111,W0612
