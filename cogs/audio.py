@@ -18,6 +18,8 @@ class Audio:
     @commands.command(hidden=False)
     async def summon(self, ctx):
         new_channel = ctx.message.author.voice_channel
+        if not new_channel:
+            self.bot.send_message(ctx.message.author, "You're not in a voice channel.")
 
 def setup(bot):
     if not discord.opus.is_loaded():
