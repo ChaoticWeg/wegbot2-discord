@@ -7,7 +7,8 @@ def _prefix_callable(bot, msg):
     return result
 
 EXTENSIONS = {
-    'cogs.voice'
+    'cogs.audio'
+    # , 'cogs.presence'
 }
 
 class Wegbot(commands.AutoShardedBot):
@@ -20,8 +21,8 @@ class Wegbot(commands.AutoShardedBot):
             try:
                 print(f'loading extension {extension}... ', end='')
                 self.load_extension(extension)
-            except:
-                print('FAILED')
+            except Exception as ex:
+                print(f'FAILED: {ex}')
             else:
                 print('OK')
 
