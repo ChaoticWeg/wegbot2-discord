@@ -1,2 +1,2 @@
 echo Starting...
-pipenv run python3 run.py
+python3.6 -m pipenv run python3.6 run.py
