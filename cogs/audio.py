@@ -17,9 +17,23 @@ class Audio:
 
     @commands.command(hidden=False)
     async def summon(self, ctx):
-        new_channel = ctx.message.author.voice_channel
-        if not new_channel:
-            self.bot.send_message(ctx.message.author, "You're not in a voice channel.")
+
+        # will be User if in DM; User does not have VoiceStatus
+        if isinstance(ctx.author, discord.User):
+            await ctx.send(f"I can't be summoned via DM.")
+            return
+
+        # no VoiceStatus if not in voice
+        try:
+            new_channel = ctx.author.voice.channel
+            # just force an exception if there's a VoiceStatus with a None channel
+            if not new_channel:
+                raise AttributeError
+        except AttributeError:
+            await ctx.send(f"You're not in a voice channel, {ctx.author.mention}.")
+            return
+
+        await ctx.send(f"I'll be able to join **{str(new_channel)}** shortly, {ctx.author.mention}.")
 
 def setup(bot):
     if not discord.opus.is_loaded():
