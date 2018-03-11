@@ -14,6 +14,7 @@ EXTENSIONS = {
 }
 
 class Wegbot(commands.AutoShardedBot):
+    
     def __init__(self):
         super().__init__(command_prefix=_prefix_callable, description="Wegbot")
 
