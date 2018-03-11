@@ -18,8 +18,6 @@ class Cleanup:
 
         if not str(ctx.author.id) == os.getenv('DISCORD_OWNER'):
             await ctx.send(f"You don't have permission to purge this channel, {ctx.author.mention}.")
-            print(f"{str(ctx.author)} tried to purge #{str(ctx.channel)}.")
-            print(f"comparing user id ({type(ctx.author.id)}) with env ({type(os.getenv('DISCORD_OWNER'))})")
             return
 
         if not str(ctx.channel.id) == os.getenv('DISCORD_HOME_CHANNEL'):
