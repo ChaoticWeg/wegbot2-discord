@@ -4,7 +4,15 @@
         {
             "label": "Run (Windows)",
             "type": "shell",
-            "command": "run.cmd",
+
+            "windows": {
+                "command": "run.cmd"
+            },
+
+            "linux": {
+                "command": "bash run.sh"
+            },
+
             "group": {
                 "kind": "build",
                 "isDefault": true
