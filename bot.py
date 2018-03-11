@@ -7,8 +7,9 @@ def _prefix_callable(bot, msg):
     return result
 
 EXTENSIONS = {
-    'cogs.audio'
-    # , 'cogs.presence'
+    'cogs.audio',
+    'cogs.potatoes',
+    'cogs.chance'
 }
 
 class Wegbot(commands.AutoShardedBot):
