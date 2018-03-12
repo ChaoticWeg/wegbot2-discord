@@ -3,9 +3,11 @@ clear
 
 :START
 echo Starting...
-pipenv run python run.py
-set EXITCODE=%ERRORLEVEL%
+python run.py
 
+:POST
+set EXITCODE=%ERRORLEVEL%
 if "%EXITCODE%"=="69" goto START
 
+:DONE
 echo Exited with code: %EXITCODE%
