@@ -4,6 +4,8 @@ import os
 import discord
 from discord.ext import commands
 
+from .errors import WegbotException
+
 def _prefix_callable(bot, msg):
     """ Returns a list of valid command prefixes """
     user_id = bot.user.id
@@ -93,6 +95,8 @@ class Wegbot(commands.AutoShardedBot):
 
         try:
             raise error
+        except WegbotException as ex:
+            await ctx.send(f"{ex.message}, {ctx.author.mention}")
         except commands.errors.NotOwner:
             await ctx.send(f"You are not authorized to do that, {ctx.author.mention}.")
         except commands.errors.CommandNotFound:
@@ -106,7 +110,7 @@ class Wegbot(commands.AutoShardedBot):
         except commands.errors.BotMissingPermissions:
             await ctx.send(f"I don't have the right permissions to do that here, {ctx.author.mention}.")
         except commands.errors.NoPrivateMessage:
-            await ctx.send(f"You can't use that command in DMs, {ctx.author.mention}.")
+            await ctx.send(f"You can't use that command in DMs.")
         except commands.errors.CommandOnCooldown as ex:
             await ctx.send(f"That command is on cooldown for {ex.retry_after} second(s) longer, {ctx.author.mention}.")
         except commands.errors.DisabledCommand:
