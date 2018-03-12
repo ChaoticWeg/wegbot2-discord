@@ -42,7 +42,7 @@ class Wegbot(commands.AutoShardedBot):
 
             disc_env = os.getenv('DISCORD_ENVIRONMENT')
             if disc_env.lower() == 'production':
-                game = discord.Game(name=f"v{os.getenv('WEGBOT_VERSION')} - ;help")
+                game = discord.Game(name=f"Wegbot v{os.getenv('WEGBOT_VERSION')} - ;help")
             elif disc_env.lower() == 'development':
                 game = discord.Game(name="(in development)")
                 status = discord.Status.dnd
