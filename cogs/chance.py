@@ -53,7 +53,7 @@ class Chance:
         except Exception as ex:
             await ctx.send("Something went wrong.")
             raise ex
-    
+
     @commands.command(hidden=False)
     async def flip(self, ctx, count='1'):
         """ Flip a coin. """
@@ -81,7 +81,7 @@ class Chance:
                 num_heads = len([ res for res in results if res is True ])
                 num_tails = len([ res for res in results if res is False ])
                 result_msg += f"Heads: **{num_heads}**\nTails: **{num_tails}**"
-            
+
             embedded = discord.Embed(title=f"Flip: {count_i} coin(s)", description=result_msg)
             await ctx.send(embed=embedded)
 

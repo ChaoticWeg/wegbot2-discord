@@ -30,7 +30,7 @@ class Messaging:
 
             if message.author == ctx.author:
                 raise WegbotException("You can't use me to pin your own comment")
-            
+
             if message.author == self.bot.user:
                 raise WegbotException("I won't pin my own message")
 
@@ -89,7 +89,7 @@ class Messaging:
             await ctx.send("Something went wrong. Check the logs.")
             print(f'*** caught an HTTPException while trying to purge #{str(ctx.channel)}')
             print(ex)
-        
+
         except Exception as ex:
             print('OWNED ONLINE')
             await ctx.send("Purge failed spectacularly. Check the logs.")
