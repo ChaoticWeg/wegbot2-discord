@@ -46,7 +46,7 @@ class Chance:
                 total += random.randint(1, sides)
                 index += 1
 
-            description = f'{ctx.author.mention} rolled a **{total}** on **{count}d{sides}**.'
+            description = f'{ctx.author.mention} rolled **{total}** on **{count}d{sides}**.'
             embedded = discord.Embed(title=f'Roll: {count}d{sides}', description=description)
 
             await ctx.send(embed=embedded)
