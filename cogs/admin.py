@@ -3,17 +3,16 @@ from discord.ext import commands
 class Admin:
     """ Administrative tasks """
 
-    @commands.command(hidden=True)
+    @commands.command(hidden=True, name="restart", disabled=True)
     @commands.is_owner()
-    async def restart(self, ctx):
+    async def _restart(self, ctx):
         """ Restart the bot. Only usable by the owner. """
         await ctx.send("brb")
-        await ctx.bot.logout()
-        ctx.bot.kill(69)
+        # await ctx.bot.restart()
 
-    @commands.command(hidden=True)
+    @commands.command(hidden=True, name="reload")
     @commands.is_owner()
-    async def reload(self, ctx, ext_name: str):
+    async def _reload(self, ctx, ext_name: str):
         """ Reload an extension, or the entire bot. Only usable by the owner. """
         await ctx.trigger_typing()
 
