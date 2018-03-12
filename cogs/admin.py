@@ -1,4 +1,5 @@
 from discord.ext import commands
+from .utils import _random
 
 class Admin:
     """ Administrative tasks. Only usable by the owner.
@@ -28,7 +29,7 @@ class Admin:
 
     @commands.command(hidden=True, name="reload")
     @commands.is_owner()
-    async def _reload(self, ctx, ext_name: str):
+    async def _reload(self, ctx, ext_name='all'):
         """ Reload an extension, or the entire bot.
             Only usable by the owner. """
 
@@ -71,6 +72,14 @@ class Admin:
         else:
             print('OK')
             await ctx.send(f"Reloaded extension: `{ext_name.replace('cogs.', '')}`")
+
+    @commands.command(hidden=True)
+    @commands.is_owner()
+    async def bye(self, ctx):
+        print(f"quit (requested by {str(ctx.author)})")
+        goodbye = _random.goodbye()
+        await ctx.send(goodbye)
+        await self.bot.logout()
 
 def setup(bot):
     bot.add_cog(Admin(bot))
