@@ -3,7 +3,7 @@ from discord.ext import commands
 
 def _prefix_callable(bot, msg):
     user_id = bot.user.id
-    result = [ f'<@!{user_id}> ', f'<@{user_id}> ', ';' ]
+    result = [ f'<@!{user_id}> ', f'<@{user_id}> ', ';', '?' ]
     return result
 
 EXTENSIONS = {
