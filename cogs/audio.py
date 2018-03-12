@@ -91,6 +91,7 @@ class Audio:
 
 
     @commands.command(hidden=True)
+    @commands.guild_only()
     async def summon(self, ctx):
         """ Summon the bot to the user's voice channel """
 
@@ -108,6 +109,7 @@ class Audio:
         return True
 
     @commands.command(hidden=True)
+    @commands.guild_only()
     async def dismiss(self, ctx):
         """ Dismiss the bot from its current voice channel """
 
@@ -120,7 +122,10 @@ class Audio:
         return True
 
     @commands.command(hidden=False)
+    @commands.guild_only()
     async def play(self, ctx, *, clip: str):
+        """ Play an audio clip. You must be in a voice channel. """
+
         requested_channel = self.get_voice_channel(ctx)
         if requested_channel is None:
             await ctx.send(f"You're not in a voice channel, {ctx.author.mention}.")

@@ -11,14 +11,12 @@ class Cleanup:
         self.bot = bot
 
     @commands.command(hidden=True)
+    @commands.is_owner()
     async def purge(self, ctx):
         """
         Purge the channel.
-        ** Unfortunately, due to Discord API limitations, only messages from within the last 14 days can be purged. Because fuck you."""
 
-        if not str(ctx.author.id) == os.getenv('DISCORD_OWNER'):
-            await ctx.send(f"You don't have permission to purge this channel, {ctx.author.mention}.")
-            return
+        ** Unfortunately, due to Discord API limitations, only messages from within the last 14 days can be purged. Because fuck you."""
 
         if not str(ctx.channel.id) == os.getenv('DISCORD_HOME_CHANNEL'):
             await ctx.send(f"I can't purge this channel, {ctx.author.mention}.")
@@ -26,7 +24,7 @@ class Cleanup:
 
         try:
 
-            async with ctx.channel.typing():
+            async with ctx.typing():
                 now = datetime.utcnow()
                 earliest = now - timedelta(days=14)
 
@@ -37,7 +35,7 @@ class Cleanup:
 
                 print(f'purging {orig_num_messages} messages from #{str(ctx.channel)}. this may take a while...')
 
-                while len(messages) > 0:
+                while messages:
                     # delete the first 100 messages if we need to, otherwise just delete them all
                     temp_messages = messages[:100] if len(messages) > 100 else messages
                     await ctx.channel.delete_messages(temp_messages)

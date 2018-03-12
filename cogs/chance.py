@@ -8,13 +8,22 @@ class Dice:
     def __init__(self, bot):
         random.seed()
         self.bot = bot
-        self.is_valid_re = re.compile('^[1-9]?d[1-9][0-9]*$')
+        self.is_valid_re = re.compile('^[1-9]?d[1-9][0-9]*$', flags=re.I)
 
     def is_valid(self, arg):
         return self.is_valid_re.match(arg)
 
     @commands.command(hidden=False)
     async def roll(self, ctx, dice='1d20'):
+        """ Roll an XdY.
+            Arguments:
+                X = number of dice to roll (optional)
+                Y = number of sides on each die
+            Default roll: 1d20
+            Example rolls: 4d8, d6, 2d12
+
+            Coming soon: support for modifiers """
+
         await ctx.channel.trigger_typing()
 
         if not self.is_valid(dice):
