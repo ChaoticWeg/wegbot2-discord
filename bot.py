@@ -63,6 +63,8 @@ class Wegbot(commands.AutoShardedBot):
             await ctx.send(f"You can't use that command in DMs, {ctx.author.mention}.")
         except commands.errors.CommandOnCooldown as ex:
             await ctx.send(f"That command is on cooldown for {ex.retry_after} second(s) longer, {ctx.author.mention}.")
+        except commands.errors.DisabledCommand:
+            await ctx.send(f"Sorry {ctx.author.mention}, that command is disabled for now.")
         else:
             print('on_command_error, but no error?')
 

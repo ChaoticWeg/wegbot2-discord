@@ -3,7 +3,7 @@ from discord.ext import commands
 class Admin:
     """ Administrative tasks """
 
-    @commands.command(hidden=True, name="restart", disabled=True)
+    @commands.command(hidden=True, name="restart", enabled=False)
     @commands.is_owner()
     async def _restart(self, ctx):
         """ Restart the bot. Only usable by the owner. """
