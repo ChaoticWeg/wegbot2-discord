@@ -90,9 +90,9 @@ class Admin:
         except ModuleNotFoundError:
             print('NOT FOUND')
             await ctx.send(f"No such extension: `{ext_name.replace('cogs.', '')}`")
-        except discord.ClientException:
-            print('BAD: no setup()')
-            await ctx.send(f"I can't load a utility module, {ctx.author.mention}.")
+        except discord.ClientException as ex:
+            print(f'BAD: {ex}')
+            await ctx.send(f"I'm having trouble loading `{ext_name}`, {ctx.author.mention}. Check the logs.")
         except Exception as ex:
             print(f'FAILED: {ex}')
             await ctx.send(f"Failed to reload `{ext_name}` - {ex}")
