@@ -101,7 +101,7 @@ class Admin:
             await ctx.send(f"Reloaded extension: `{ext_name.replace('cogs.', '')}`")
 
 
-    @commands.command(hidden=True, enabled=False)
+    @commands.command(hidden=True)
     @commands.is_owner()
     async def bye(self, ctx):
         """ Kill the bot """
