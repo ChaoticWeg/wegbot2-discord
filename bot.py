@@ -4,7 +4,7 @@ import os
 import discord
 from discord.ext import commands
 
-from .errors import WegbotException
+from cogs.errors import WegbotException
 
 def _prefix_callable(bot, msg):
     """ Returns a list of valid command prefixes """
