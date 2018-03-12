@@ -49,6 +49,7 @@ class Messaging:
 
     @commands.command(hidden=True)
     @commands.is_owner()
+    @commands.guild_only()
     async def purge(self, ctx):
         """ Purge the channel.
 
