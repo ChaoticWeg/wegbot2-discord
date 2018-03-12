@@ -41,16 +41,21 @@ class Admin:
             # reload all
 
             if ext_name.lower() == 'all':
+                starting_count = len(tuple(self.bot.extensions))
+                print(f'reloading {starting_count} extensions... ', end='')
+
                 failed = []
 
                 for ext in tuple(self.bot.extensions):
                     if not self.reload_extension(ext):
-                        print(f'failed to reload extension: {ext}')
                         failed.append(ext)
 
                 if failed:
+                    how_many = 'ALL' if len(failed) == starting_count else len(failed)
+                    print(f'{how_many} FAILED')
                     await ctx.send(f"Failed to reload extension(s): {','.join(failed)}.")
                 else:
+                    print('OK')
                     await ctx.send(f"Successfully reloaded {len(tuple(self.bot.extensions))} extensions.")
 
                 return
