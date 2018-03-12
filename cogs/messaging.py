@@ -4,8 +4,8 @@ import os
 import discord
 from discord.ext import commands
 
-class Cleanup:
-    """ Cleans up the bot testing channel """
+class Messaging:
+    """ Message-related commands """
 
     def __init__(self, bot):
         self.bot = bot
@@ -13,8 +13,7 @@ class Cleanup:
     @commands.command(hidden=True)
     @commands.is_owner()
     async def purge(self, ctx):
-        """
-        Purge the channel.
+        """ Purge the channel.
 
         ** Unfortunately, due to Discord API limitations, only messages from within the last 14 days can be purged. Because fuck you."""
 
@@ -59,4 +58,4 @@ class Cleanup:
 
 
 def setup(bot):
-    bot.add_cog(Cleanup(bot))
+    bot.add_cog(Messaging(bot))
