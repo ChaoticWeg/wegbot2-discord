@@ -6,11 +6,11 @@
             "type": "shell",
 
             "windows": {
-                "command": "run.cmd"
+                "command": "pipenv run run.cmd"
             },
 
             "linux": {
-                "command": "bash run.sh"
+                "command": "pipenv run bash run.sh"
             },
 
             "group": {
