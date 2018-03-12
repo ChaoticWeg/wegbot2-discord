@@ -1,4 +1,4 @@
-import os, sys
+import os
 from discord.ext import commands
 
 def _prefix_callable(bot, msg):
@@ -30,11 +30,6 @@ class Wegbot(commands.AutoShardedBot):
                 print(f'FAILED: {ex}')
             else:
                 print('OK')
-
-    @staticmethod
-    def kill(code):
-        print(f'killing bot with code: {code}')
-        sys.exit(code)
 
     async def on_ready(self):
         print(f'logged in as {self.user}')
