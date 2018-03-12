@@ -1,3 +1,4 @@
+import discord
 from discord.ext import commands
 from .utils import _random
 
@@ -63,12 +64,16 @@ class Admin:
             print(f'reloading extension {ext_name:.<15}... ', end='')
             self.bot.unload_extension(ext_name)
             self.bot.load_extension(ext_name)
+
         except ModuleNotFoundError:
             print('NOT FOUND')
             await ctx.send(f"No such extension: `{ext_name.replace('cogs.', '')}`")
+        except discord.ClientException:
+            print('BAD: no setup()')
+            await ctx.send(f"I can't load a utility module, {ctx.author.mention}.")
         except Exception as ex:
             print(f'FAILED: {ex}')
-            await ctx.send(f"Failed to reload `{ext_name}`: {ex}")
+            await ctx.send(f"Failed to reload `{ext_name}` - {ex}")
         else:
             print('OK')
             await ctx.send(f"Reloaded extension: `{ext_name.replace('cogs.', '')}`")
