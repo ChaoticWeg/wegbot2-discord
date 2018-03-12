@@ -33,6 +33,7 @@ class Taters:
 
     @commands.command(hidden=False)
     async def taters(self, ctx):
+        """ Generate potato. """
         await ctx.channel.trigger_typing()
         taters = make_taters()
         await ctx.send(taters)

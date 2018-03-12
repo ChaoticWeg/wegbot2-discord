@@ -13,11 +13,10 @@ class Dice:
     def is_valid(self, arg):
         return self.is_valid_re.match(arg)
 
-    @commands.command(hidden=False)
+    @commands.command(hidden=False, brief="Roll the dice.")
     async def roll(self, ctx, dice='1d20'):
-        """ Roll an XdY.
-            Arguments:
-                X = number of dice to roll (optional)
+        """ Roll an XdY, where
+                X = number of dice to roll (optional, default: 1)
                 Y = number of sides on each die
             Default roll: 1d20
             Example rolls: 4d8, d6, 2d12
