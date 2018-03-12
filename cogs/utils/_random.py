@@ -20,7 +20,10 @@ GOODBYES = [
     "`*** Quits: wegbot (No route to host)`",
 ]
 
+
 def goodbye():
+    """ Get a random goodbye """
+
     # pylint: disable=W0603
     # shut the FUCK UP ABOUT IT
     global GOODBYES

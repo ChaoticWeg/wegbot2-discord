@@ -7,12 +7,15 @@ from discord.ext import commands
 from .errors import WegbotException
 
 class Chance:
+    """ Roll dice, flip a coin, etc """
+
     def __init__(self, bot):
         random.seed()
         self.bot = bot
         self.is_valid_dice_re = re.compile('^[1-9]?d[1-9][0-9]*$', flags=re.I)
 
     def is_valid_dice(self, arg):
+        """ Uses regex to determine whether the dice roll is valid """
         return self.is_valid_dice_re.match(arg)
 
     @commands.command(hidden=False, brief="Roll the dice.")
@@ -50,13 +53,15 @@ class Chance:
 
         except WegbotException as ex:
             await ctx.send(f"{ex.message}, {ctx.author.mention}.")
+
         except Exception as ex:
             await ctx.send("Something went wrong.")
             raise ex
 
     @commands.command(hidden=False)
     async def flip(self, ctx, count='1'):
-        """ Flip a coin. """
+        """ Flip a coin.
+            Flip multiple coins, I don't give a fuck """
 
         await ctx.trigger_typing()
 
@@ -89,6 +94,8 @@ class Chance:
             await ctx.send(f"{ex.message}, {ctx.author.mention}.")
         except Exception as ex:
             raise ex
+
+
 
 def setup(bot):
     bot.add_cog(Chance(bot))

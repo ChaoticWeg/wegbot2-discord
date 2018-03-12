@@ -1,14 +1,16 @@
+""" Administrative commands """
+
 import discord
 from discord.ext import commands
+
 from .utils import _random
 
 class Admin:
-    """ Administrative tasks. Only usable by the owner.
-        Notes:
-            - Use ;reload to load an extension for the first time. """
+    """ Administrative tasks. Only usable by the owner. """
 
     def __init__(self, bot):
         self.bot = bot
+
 
     @commands.command(hidden=True, name="restart", enabled=False)
     @commands.is_owner()
@@ -16,10 +18,13 @@ class Admin:
         """ Restart the bot.
             Only usable by the owner. """
 
-        await ctx.send("brb")
+        await ctx.send(_random.goodbye())
         # await ctx.bot.restart()
 
+
     def reload_extension(self, ext):
+        """ Attempt to load an extension. Returns True iff successful, otherwise False """
+
         try:
             self.bot.unload_extension(ext)
             self.bot.load_extension(ext)
@@ -27,6 +32,28 @@ class Admin:
             return False
         else:
             return True
+
+
+    def reload_all(self):
+        """ Attempt to reload all extensions """
+
+        starting_count = len(tuple(self.bot.extensions))
+        print(f'reloading {starting_count} extensions... ', end='')
+
+        failed = []
+
+        for ext in tuple(self.bot.extensions):
+            if not self.reload_extension(ext):
+                failed.append(ext)
+
+        if failed:
+            how_many = 'ALL' if len(failed) == starting_count else len(failed)
+            print(f'{how_many} FAILED')
+        else:
+            print('OK')
+
+        return failed
+
 
     @commands.command(hidden=True, name="reload")
     @commands.is_owner()
@@ -41,22 +68,12 @@ class Admin:
             # reload all
 
             if ext_name.lower() == 'all':
-                starting_count = len(tuple(self.bot.extensions))
-                print(f'reloading {starting_count} extensions... ', end='')
-
-                failed = []
-
-                for ext in tuple(self.bot.extensions):
-                    if not self.reload_extension(ext):
-                        failed.append(ext)
+                failed = self.reload_all()
 
                 if failed:
-                    how_many = 'ALL' if len(failed) == starting_count else len(failed)
-                    print(f'{how_many} FAILED')
-                    await ctx.send(f"Failed to reload extension(s): {','.join(failed)}.")
+                    await ctx.send(f"Failed to reload `{'`, `'.join(failed)}`.")
                 else:
-                    print('OK')
-                    await ctx.send(f"Successfully reloaded {len(tuple(self.bot.extensions))} extensions.")
+                    await ctx.send(f"Reloaded {len(tuple(self.bot.extensions))} extensions.")
 
                 return
 
@@ -83,13 +100,18 @@ class Admin:
             print('OK')
             await ctx.send(f"Reloaded extension: `{ext_name.replace('cogs.', '')}`")
 
-    @commands.command(hidden=True)
+
+    @commands.command(hidden=True, enabled=False)
     @commands.is_owner()
     async def bye(self, ctx):
+        """ Kill the bot """
+
         print(f"quit (requested by {str(ctx.author)})")
         goodbye = _random.goodbye()
         await ctx.send(goodbye)
         await self.bot.logout()
+
+
 
 def setup(bot):
     bot.add_cog(Admin(bot))

@@ -12,9 +12,12 @@ class Messaging:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(hidden=False, name="pin")
+
+    @commands.command(hidden=False, name="pin", brief="Pin that!")
     @commands.guild_only()
     async def pin_that(self, ctx, *, target_user: commands.UserConverter):
+        """ Pins the last message from target_user """
+
         await ctx.trigger_typing()
 
         try:
@@ -42,6 +45,7 @@ class Messaging:
         except Exception as ex:
             print(ex)
             await ctx.send(f"Couldn't pin that, {ctx.author.mention}.")
+
 
     @commands.command(hidden=True)
     @commands.is_owner()

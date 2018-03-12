@@ -1,3 +1,5 @@
+""" Another fucking shitpost """
+
 import random
 from discord.ext import commands
 
@@ -28,6 +30,8 @@ def make_taters(line_length=20, num_lines=10, taters_per_line=5):
 
 
 class Taters:
+    """ TATERS """
+
     def __init__(self, bot):
         self.bot = bot
 

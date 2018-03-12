@@ -3,23 +3,6 @@ import discord
 from discord.ext import commands
 
 
-class AudioRequest:
-    """ Audio request """
-
-    def __init__(self, channel, clip):
-        self.channel = channel
-        self.clip = clip
-
-
-
-class AudioPlayer:
-    """ Audio player """
-
-    def __init__(self):
-        pass
-
-
-
 class Audio:
     """ Audio shitposting """
 
@@ -28,6 +11,7 @@ class Audio:
         self.voice = None
         self.is_playing = False
         self.requests = []
+
 
     @staticmethod
     def get_voice_channel(ctx):
@@ -67,6 +51,8 @@ class Audio:
 
 
     async def play_request(self, req):
+        """ Attempt to play a request """
+
         await self.connect_voice(req.channel)
 
         self.is_playing = True
@@ -75,18 +61,21 @@ class Audio:
         print(f'TODO play clip "{req.clip}" in channel "{str(req.channel)}"')
         await asyncio.sleep(2)
 
-        if not self.requests:
+        # if no more requests, done playing
+        try:
+            next_request = self.requests[0]
+        except:
             self.is_playing = False
             await self.disconnect_voice()
             return
 
-        next_request = self.requests[0]
-
+        # remove the request we just pulled
         try:
             self.requests = self.requests[1:]
         except:
             self.requests = []
 
+        # play the request we just pulled
         await self.play_request(next_request)
 
 
@@ -95,12 +84,8 @@ class Audio:
     async def summon(self, ctx):
         """ Summon the bot to the user's voice channel """
 
-        # will be User if in DM -- User does not have VoiceStatus
-        if isinstance(ctx.author, discord.User):
-            await ctx.send("I can't be summoned via DM.")
-            return False
-
         new_channel = self.get_voice_channel(ctx)
+
         if new_channel is None:
             await ctx.send(f"You're not in a voice channel, {ctx.author.mention}.")
             return False
@@ -108,38 +93,25 @@ class Audio:
         await self.connect_voice(new_channel)
         return True
 
+
     @commands.command(hidden=True)
     @commands.guild_only()
     async def dismiss(self, ctx):
         """ Dismiss the bot from its current voice channel """
 
         if self.voice is None:
-            end = f", {ctx.author.mention}" if isinstance(ctx.channel, discord.TextChannel) else ""
-            await ctx.send(f"I'm not in a voice channel{end}.")
+            await ctx.send(f"I'm not in a voice channel, {ctx.author.mention}.")
             return False
 
         await self.disconnect_voice()
         return True
 
-    @commands.command(hidden=False, brief="Play an audio clip.")
+
+    @commands.command(hidden=False, brief="Play an audio clip.", enabled=False)
     @commands.guild_only()
     async def play(self, ctx, *, clip: str):
         """ Play an audio clip. You must be in a voice channel. """
-
-        requested_channel = self.get_voice_channel(ctx)
-        if requested_channel is None:
-            await ctx.send(f"You're not in a voice channel, {ctx.author.mention}.")
-            return False
-
-        request = AudioRequest(requested_channel, clip)
-
-        if self.is_playing:
-            self.requests.append(request)
-            print(f"Queued: '{clip}' (in channel: '{str(requested_channel)}')")
-            return True
-
-        await self.play_request(request)
-        return True
+        pass
 
 
 def setup(bot):
