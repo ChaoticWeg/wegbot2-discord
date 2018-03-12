@@ -4,11 +4,47 @@ import os
 import discord
 from discord.ext import commands
 
+class PinException(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+        self.message = message
+
 class Messaging:
     """ Message-related commands """
 
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command(hidden=False, name="pin")
+    @commands.guild_only()
+    async def pin_that(self, ctx, *, target_user: commands.UserConverter):
+        await ctx.trigger_typing()
+
+        try:
+
+            messages = await ctx.channel.history(limit=10).flatten()
+            message_ids = [ msg.id for msg in messages if msg.author == target_user ]
+            messages = [ msg for msg in messages if msg.id in message_ids ]
+
+            if not message_ids:
+                raise PinException(f"{target_user.name} hasn't said anything recently")
+
+            message = messages[0]
+
+            if message.author == ctx.author:
+                raise PinException("You can't use me to pin your own comment")
+            
+            if message.author == self.bot.user:
+                raise PinException("I won't pin my own message")
+
+            await message.pin()
+
+        except PinException as ex:
+            await ctx.send(f"{ex}, {ctx.author.mention}.")
+
+        except Exception as ex:
+            print(ex)
+            await ctx.send(f"Couldn't pin that, {ctx.author.mention}.")
 
     @commands.command(hidden=True)
     @commands.is_owner()
