@@ -18,7 +18,8 @@ EXTENSIONS = {
     'cogs.audio',
     'cogs.potatoes',
     'cogs.chance',
-    'cogs.messaging'
+    'cogs.messaging',
+    'cogs.info'
 }
 
 ### WEGBOT WEGBOT WEGBOT
@@ -42,22 +43,23 @@ class Wegbot(commands.AutoShardedBot):
                 print('OK')
 
 
+    @property
+    def environment(self):
+        return os.getenv('DISCORD_ENVIRONMENT', default='development').lower()
+
+    @property
+    def version(self):
+        ver = os.getenv('WEGBOT_VERSION', default='0.69')
+        return f"v{ver}" + ('[dev]' if self.environment == 'development' else '')
+
+
     async def set_presence(self):
         """ Set presence according to environment """
 
         try:
 
-            game = None
-            status = discord.Status.online
-
-            disc_env = os.getenv('DISCORD_ENVIRONMENT')
-            if disc_env.lower() == 'production':
-                game = discord.Game(name=f"v{os.getenv('WEGBOT_VERSION')} – ?help")
-            elif disc_env.lower() == 'development':
-                game = discord.Game(name="(in development)")
-                status = discord.Status.dnd
-            else:
-                game = discord.Game(name=disc_env)
+            game = discord.Game(name=f"{self.version} – ?help")
+            status = discord.Status.active if self.environment == 'production' else discord.Status.dnd
 
             print(f'presence: "{game}"... ', end='')
             await self.change_presence(activity=game, status=status)
