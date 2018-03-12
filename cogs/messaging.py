@@ -98,6 +98,9 @@ class Messaging:
             print('OWNED ONLINE')
             await ctx.send("Purge failed spectacularly. Check the logs.")
             raise ex
+        
+        else:
+            print('OK')
 
 
 def setup(bot):
