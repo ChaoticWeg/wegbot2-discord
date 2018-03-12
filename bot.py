@@ -30,8 +30,9 @@ class Wegbot(commands.AutoShardedBot):
                 print(f'FAILED: {ex}')
             else:
                 print('OK')
-    
-    def kill(self, code):
+
+    @staticmethod
+    def kill(code):
         print(f'killing bot with code: {code}')
         sys.exit(code)
 
