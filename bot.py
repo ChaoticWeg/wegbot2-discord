@@ -59,7 +59,7 @@ class Wegbot(commands.AutoShardedBot):
         try:
 
             game = discord.Game(name=f"{self.version} – ?help")
-            status = discord.Status.active if self.environment == 'production' else discord.Status.dnd
+            status = discord.Status.online if self.environment == 'production' else discord.Status.dnd
 
             print(f'presence: "{game}"... ', end='')
             await self.change_presence(activity=game, status=status)
