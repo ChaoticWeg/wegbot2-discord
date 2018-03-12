@@ -4,7 +4,7 @@ import re
 import discord
 from discord.ext import commands
 
-class Dice:
+class Chance:
     def __init__(self, bot):
         random.seed()
         self.bot = bot
@@ -46,4 +46,4 @@ class Dice:
         await ctx.send(embed=embedded)
 
 def setup(bot):
-    bot.add_cog(Dice(bot))
+    bot.add_cog(Chance(bot))
