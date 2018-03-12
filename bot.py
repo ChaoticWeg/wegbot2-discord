@@ -11,7 +11,7 @@ EXTENSIONS = {
     'cogs.audio',
     'cogs.potatoes',
     'cogs.chance',
-    'cogs.cleanup'
+    'cogs.messaging'
 }
 
 class Wegbot(commands.AutoShardedBot):
