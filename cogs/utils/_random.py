@@ -13,7 +13,7 @@ GOODBYES = [
     "`*** wegbot is away - gone, if anyone talks in the next 25 minutes as me it's weg being an asshole -`",
     'wait, shit',
     "fuck you i didn't touch the cookie, bitch",
-    '`*** wegbot has quit IRC (r`heaven)`',
+    '`*** wegbot has quit IRC (r``heaven)`',
     '`*** wegbot is now known as wegbotWITHGIRLFRIENDWHOISHOT`',
     'dammit',
     "`*** Quits: wegbot (No route to host)`",
