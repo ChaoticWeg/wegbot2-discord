@@ -5,8 +5,16 @@ class Admin:
 
     @commands.command(hidden=True)
     @commands.is_owner()
+    async def restart(self, ctx):
+        """ Restart the bot. Only usable by the owner. """
+        await ctx.send("brb")
+        await ctx.bot.logout()
+        ctx.bot.kill(69)
+
+    @commands.command(hidden=True)
+    @commands.is_owner()
     async def reload(self, ctx, ext_name: str):
-        """ Reload an extension, or the entire bot. """
+        """ Reload an extension, or the entire bot. Only usable by the owner. """
         await ctx.trigger_typing()
 
         if not ext_name.startswith('cogs.'):
