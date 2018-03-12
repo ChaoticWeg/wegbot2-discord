@@ -59,12 +59,13 @@ class Wegbot(commands.AutoShardedBot):
             else:
                 game = discord.Game(name=disc_env)
 
+            print(f'presence: "{game}"... ', end='')
             await self.change_presence(activity=game, status=status)
 
         except Exception as ex:
-            print(f"Unable to set presence! {ex}")
+            print(f"FAILED: {ex}")
         else:
-            print("successfully set presence")
+            print("OK")
 
 
     async def on_connect(self):
