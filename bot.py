@@ -1,4 +1,5 @@
 import os
+import discord
 from discord.ext import commands
 
 def _prefix_callable(bot, msg):
@@ -24,15 +25,39 @@ class Wegbot(commands.AutoShardedBot):
 
         for extension in EXTENSIONS:
             try:
-                print(f'loading extension {extension:.<15} ', end='')
+                print(f'loading extension {extension:.<18} ', end='')
                 self.load_extension(extension)
             except Exception as ex:
                 print(f'FAILED: {ex}')
             else:
                 print('OK')
 
+    async def set_presence(self):
+        """ Set presence according to environment """
+
+        try:
+
+            game = None
+            status = discord.Status.online
+
+            disc_env = os.getenv('DISCORD_ENVIRONMENT')
+            if disc_env.lower() == 'production':
+                game = discord.Game(name=f"v{os.getenv('WEGBOT_VERSION')} - ;help")
+            elif disc_env.lower() == 'development':
+                game = discord.Game(name="(in development)")
+                status = discord.Status.dnd
+            else:
+                game = discord.Game(name=disc_env)
+
+            await self.change_presence(activity=game, status=status)
+
+        except Exception as ex:
+            print(f"Unable to set presence! {ex}")
+
+
     async def on_ready(self):
         print(f'logged in as {self.user}')
+        await self.set_presence()
 
     async def on_message(self, message):
         if message.author.bot:
