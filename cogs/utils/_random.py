@@ -16,7 +16,6 @@ GOODBYES = [
     '`*** wegbot has quit IRC (r`heaven)`',
     '`*** wegbot is now known as wegbotWITHGIRLFRIENDWHOISHOT`',
     'dammit',
-    "Ok I'm back.",
     "`*** Quits: wegbot (No route to host)`",
 ]
 
