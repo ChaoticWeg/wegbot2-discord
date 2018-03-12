@@ -16,7 +16,11 @@ class Messaging:
     @commands.command(hidden=False, name="pin", brief="Pin that!")
     @commands.guild_only()
     async def pin_that(self, ctx, *, target_user: commands.UserConverter):
-        """ Pins the last message from target_user """
+        """ Pins the last message sent by <target_user>, where <target_user> is one of the following:
+
+                - @mention
+                - full name
+                - user id """
 
         await ctx.trigger_typing()
 
@@ -99,7 +103,7 @@ class Messaging:
             print('OWNED ONLINE')
             await ctx.send("Purge failed spectacularly. Check the logs.")
             raise ex
-        
+
         else:
             print('OK')
 
