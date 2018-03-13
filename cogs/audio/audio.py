@@ -108,7 +108,7 @@ class Audio:
             return True
 
 
-    @commands.command(hidden=False, brief="Play an audio clip.", disabled=True)
+    @commands.command(hidden=False, brief="Play an audio clip.", enabled=False)
     @commands.guild_only()
     async def play(self, ctx, *, clip: str):
         """ Play an audio clip. You must be in a voice channel. """
