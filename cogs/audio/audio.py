@@ -2,6 +2,16 @@ import asyncio
 import discord
 from discord.ext import commands
 
+from ..errors import WegbotException
+from .clips import Clips
+
+
+class AudioRequest:
+    """ Audio request """
+    def __init__(self, channel, clip):
+        self.channel = channel
+        self.clip = clip
+
 
 class Audio:
     """ Audio shitposting """
@@ -57,9 +67,11 @@ class Audio:
 
         self.is_playing = True
 
-        # TODO play clip
-        print(f'TODO play clip "{req.clip}" in channel "{str(req.channel)}"')
-        await asyncio.sleep(2)
+        try:
+            source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(req.clip.path))
+            await self.voice.play(source, after=lambda e: print(f"Player error: {e}") if e else None)
+        except Exception as ex:
+            raise ex
 
         # if no more requests, done playing
         try:
@@ -107,11 +119,31 @@ class Audio:
         return True
 
 
-    @commands.command(hidden=False, brief="Play an audio clip.", enabled=False)
+    @commands.command(hidden=False, brief="Play an audio clip.")
     @commands.guild_only()
     async def play(self, ctx, *, clip: str):
         """ Play an audio clip. You must be in a voice channel. """
-        pass
+
+        try:
+
+            channel = self.get_voice_channel(ctx)
+
+            if channel is None:
+                raise WegbotException("You're not in a voice channel")
+
+            clip = Clips.get_by_name(clip)
+
+            if clip is None:
+                raise WegbotException("No such clip")
+
+            await self.play_request(AudioRequest(channel, clip))
+
+        except WegbotException as ex:
+            await ctx.send(f"{ex.message}, {ctx.author.mention}.")
+
+        except Exception as ex:
+            await ctx.send(f"Error while playing `{clip}`: {ex}")
+            await self.disconnect_voice()
 
 
 def setup(bot):
