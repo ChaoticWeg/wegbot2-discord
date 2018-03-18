@@ -1,7 +1,8 @@
 import discord
 from discord.ext import commands
 
-from ..errors import WegbotException
+from cogs.errors import WegbotException
+from .clips import get_by_name as get_clip
 
 
 class AudioRequest:
@@ -86,7 +87,7 @@ class Audio:
 
     async def force_dismiss(self, ctx):
         if ctx.voice_client is None:
-            raise WegbotException()
+            raise WegbotException("Unable to force dismiss: no voice client")
         await ctx.voice_client.disconnect()
 
 
@@ -108,14 +109,23 @@ class Audio:
             return True
 
 
-    @commands.command(hidden=False, brief="Play an audio clip.", enabled=False)
+    @commands.command(hidden=False, brief="Play an audio clip.")
     @commands.guild_only()
-    async def play(self, ctx, *, clip: str):
+    async def play(self, ctx, *, clip_name: str):
         """ Play an audio clip. You must be in a voice channel. """
-        pass
+        try:
 
+            clip = get_clip(clip_name)
+            if clip is None:
+                raise WegbotException(f"I don't know any clips called '{clip_name}'")
+            
+            # TODO add clip to queue
+            # maybe have another loop playing from the queue
+            # anyway here's an exception
+            raise WegbotException("I can't play clips yet")
 
-def setup(bot):
-    if not discord.opus.is_loaded():
-        discord.opus.load_opus('opus')
-    bot.add_cog(Audio(bot))
+        except WegbotException as ex:
+            await ctx.send(f"{ex.message}, {ctx.author.mention}.")
+            return False
+
+# --> setup() is in __init__.py
