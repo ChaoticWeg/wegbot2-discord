@@ -13,42 +13,39 @@ class Messaging:
         self.bot = bot
 
 
-    @commands.command(hidden=False, name="pin", brief="Pin that!")
+    @commands.command(hidden=False, name="pin", brief="Pin a message.", rest_is_raw=True)
     @commands.guild_only()
-    async def pin_that(self, ctx, *, target_user: commands.UserConverter):
-        """ Pins the last message sent by <target_user>, where <target_user> is one of the following:
-
-                - @mention
-                - full name
-                - user id """
+    async def pin_that(self, ctx, message_id: int, *, addition=None):
+        """ Pins the message with the given ID.
+        
+        You may also provide additional text that will appear at the front of the pinned message. """
 
         await ctx.trigger_typing()
 
         try:
 
-            messages = await ctx.channel.history(limit=10).flatten()
-            message_ids = [ msg.id for msg in messages if msg.author == target_user ]
-            messages = [ msg for msg in messages if msg.id in message_ids ]
+            message = await ctx.channel.get_message(message_id)
+            if message.pinned is True:
+                raise WegbotException("That message has already been pinned")
 
-            if not message_ids:
-                raise WegbotException(f"{target_user.name} hasn't said anything recently")
+            embedded = discord.Embed(title=f"Message from {message.author}")
+            embedded.add_field(name="Original Message", value=message.content, inline=False)
 
-            message = messages[0]
+            if addition is not None:
+                embedded.add_field(name="Context", value=addition, inline=False)
 
-            if message.author == ctx.author:
-                raise WegbotException("You can't use me to pin your own comment")
-
-            if message.author == self.bot.user:
-                raise WegbotException("I won't pin my own message")
-
-            await message.pin()
+            sent = await ctx.send(embed=embedded)
+            await sent.pin()
 
         except WegbotException as ex:
             await ctx.send(f"{ex.message}, {ctx.author.mention}.")
 
+        except discord.errors.NotFound:
+            await ctx.send(f"Couldn't find a message with that ID, {ctx.author.mention}.")
+
         except Exception as ex:
-            print(ex)
-            await ctx.send(f"Couldn't pin that, {ctx.author.mention}.")
+            await ctx.send(f"Couldn't pin that, {ctx.author.mention}. Have @ChaoticWeg check the logs.")
+            raise ex
 
 
     @commands.command(hidden=True)
