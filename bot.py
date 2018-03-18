@@ -119,7 +119,7 @@ class Wegbot(commands.AutoShardedBot):
         except commands.errors.DisabledCommand:
             await ctx.send(f"Sorry {ctx.author.mention}, that command is disabled for now.")
         except commands.errors.BadArgument as ex:
-            await ctx.send(f"{ex}. Use `;help` for help.")
+            await ctx.send(f"{ex} – Use `;help` for help.")
         else:
             print('on_command_error, but no error?')
 
