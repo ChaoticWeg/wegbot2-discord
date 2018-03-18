@@ -28,11 +28,8 @@ class Messaging:
             if message.pinned is True:
                 raise WegbotException("That message has already been pinned")
 
-            embedded = discord.Embed(title=f"Message from {message.author}")
+            embedded = discord.Embed(title=f"Message from {message.author}", description=addition)
             embedded.add_field(name="Original Message", value=message.content, inline=False)
-
-            if addition is not None:
-                embedded.add_field(name="Context", value=addition, inline=False)
 
             sent = await ctx.send(embed=embedded)
             await sent.pin()
