@@ -10,6 +10,12 @@ THRESHOLD = 5
 
 @commands.command(brief="Please don't @everyone.")
 async def nuisance(self, ctx, *, whomst: commands.UserConverter):
+    """
+    Do you have a friend who won't quit @'ing everyone? Tag them. Shame them.
+    ...Or vindicate them. You might just be a prick about it.
+
+    But are they a nuisance? I'll be the judge of that."""
+
     await ctx.trigger_typing()
 
     history = []
