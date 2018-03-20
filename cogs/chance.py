@@ -39,14 +39,24 @@ class Chance:
 
             count = int(parts[0]) if parts[0] else 1
             sides = int(parts[1])
-            total = 0
+
+            results = []
 
             index = 0
             while index < count:
-                total += random.randint(1, sides)
+                results.append(random.randint(1, sides))
                 index += 1
 
+            # TODO what a fuckin hack. all of this.
+
+            total = 0
+            for res in results:
+                total += res
+
             description = f'{ctx.author.mention} rolled **{total}** on **{count}d{sides}**.'
+            if count > 1:
+                description += f'\nRolls: **{"**, **".join([str(r) for r in results])}**'
+
             embedded = discord.Embed(title=f'Roll: {count}d{sides}', description=description)
 
             await ctx.send(embed=embedded)
