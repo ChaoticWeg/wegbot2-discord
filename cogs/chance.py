@@ -100,7 +100,7 @@ class Chance:
             self.bot.logger.warning(f"can't flip {count}: {ex}")
             await ctx.send(f"{ex.message}, {ctx.author.mention}.")
         except ValueError:
-            self.bot.logger.warning(f"invalid count {count} from {ctx.author}")
+            self.bot.logger.warning(f"invalid count '{count}' from {ctx.author}")
             await ctx.send(f"`{count}` isn't a number, {ctx.author.mention}.")
         except Exception as ex:
             self.bot.logger.exception(f"unexpected error flipping {count}: {ex}")
