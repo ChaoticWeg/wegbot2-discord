@@ -34,5 +34,5 @@ async def pin_that(self, ctx, message_id: int, *, addition=None):
         await ctx.send(f"Couldn't find a message with that ID, {ctx.author.mention}.")
 
     except Exception as ex:
-        self.bot.logger.warning(f'unable to pin message {message_id}: {ex}')
+        self.bot.logger.exception(f'unable to pin message {message_id}: {ex}')
         await ctx.send(f"Couldn't pin that, {ctx.author.mention}. Have @ChaoticWeg check the logs.")

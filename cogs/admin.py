@@ -93,7 +93,7 @@ class Admin:
             self.bot.logger.warning(f'failed to reload extension {ext_name}: {ex}')
             await ctx.send(f"I'm having trouble loading `{ext_name}`, {ctx.author.mention}. Check the logs.")
         except Exception as ex:
-            self.bot.logger.warning(f'failed to reload extension {ext_name}: {ex}')
+            self.bot.logger.exception(f'failed to reload extension {ext_name}: {ex}')
             await ctx.send(f"Failed to reload `{ext_name}` - {ex}")
         else:
             self.bot.logger.info(f'successfully reloaded extension {ext_name}')

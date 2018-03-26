@@ -35,14 +35,23 @@ class Wegbot(commands.AutoShardedBot):
         self.token = os.getenv('DISCORD_TOKEN')
         self._logger = get_wegbot_logger()
 
+        self.load_all()
+
+
+    def load_all(self):
+        exceptions = []
+
         for extension in EXTENSIONS:
             try:
                 self.load_extension(extension)
             except Exception as ex:
+                exceptions.append((extension, ex))
                 self.logger.info(f'loading extension {extension:.<18} FAILED')
-                self.logger.warning(f'failed to load extension {extension}: {ex}')
             else:
                 self.logger.info(f'loading extension {extension:.<18} OK')
+
+        for ex in exceptions:
+            self.logger.exception(f"Exception while loading extention {ex[0]}: {ex[1]}")
 
     @property
     def logger(self):
@@ -70,6 +79,7 @@ class Wegbot(commands.AutoShardedBot):
 
         except Exception as ex:
             self.logger.warning(f"FAILED to set presence: {ex}")
+            self.logger.exception(ex)
         else:
             self.logger.info("successfully set presence")
 

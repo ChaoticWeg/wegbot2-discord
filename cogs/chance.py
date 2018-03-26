@@ -60,7 +60,7 @@ class Chance:
             await ctx.send(f"{ex.message}, {ctx.author.mention}.")
 
         except Exception as ex:
-            self.bot.logger.warning(f'unexpected error rolling {dice}: {ex}')
+            self.bot.logger.exception(f'unexpected error rolling {dice}: {ex}')
             await ctx.send("Something went wrong.")
 
     @commands.command(hidden=False)
@@ -100,7 +100,7 @@ class Chance:
             self.bot.logger.warning(f"can't flip {count}: {ex}")
             await ctx.send(f"{ex.message}, {ctx.author.mention}.")
         except Exception as ex:
-            self.bot.logger.warning(f"unexpected error flipping {count}: {ex}")
+            self.bot.logger.exception(f"unexpected error flipping {count}: {ex}")
             await ctx.send(f"Unexpected error while flipping {count}. Check the logs.")
 
 
