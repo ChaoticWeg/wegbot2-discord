@@ -48,7 +48,7 @@ class Info:
     async def _version(self, ctx):
         """ Bot version info. """
         await ctx.invoke(self.version)
-    
+
 
     @commands.command(hidden=False, name='github')
     async def _github(self, ctx):

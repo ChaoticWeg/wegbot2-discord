@@ -5,6 +5,7 @@ import discord
 from discord.ext import commands
 
 from cogs.errors import WegbotException
+from lib.log import get_wegbot_logger
 
 def _prefix_callable(bot, msg):
     """ Returns a list of valid command prefixes """
@@ -32,16 +33,20 @@ class Wegbot(commands.AutoShardedBot):
         super().__init__(command_prefix=_prefix_callable, description="Wegbot", owner_id=int(os.getenv('DISCORD_OWNER')))
 
         self.token = os.getenv('DISCORD_TOKEN')
+        self._logger = get_wegbot_logger()
 
         for extension in EXTENSIONS:
             try:
-                print(f'loading extension {extension:.<18} ', end='')
                 self.load_extension(extension)
             except Exception as ex:
-                print(f'FAILED: {ex}')
+                self.logger.info(f'loading extension {extension:.<18} FAILED')
+                self.logger.warning(f'failed to load extension {extension}: {ex}')
             else:
-                print('OK')
+                self.logger.info(f'loading extension {extension:.<18} OK')
 
+    @property
+    def logger(self):
+        return self._logger
 
     @property
     def environment(self):
@@ -61,26 +66,25 @@ class Wegbot(commands.AutoShardedBot):
             game = discord.Game(name=f"{self.version} – ?help")
             status = discord.Status.online if self.environment == 'production' else discord.Status.dnd
 
-            print(f'presence: "{game}"... ', end='')
             await self.change_presence(activity=game, status=status)
 
         except Exception as ex:
-            print(f"FAILED: {ex}")
+            self.logger.warning(f"FAILED to set presence: {ex}")
         else:
-            print("OK")
+            self.logger.info("successfully set presence")
 
 
     async def on_connect(self):
         """ What to do when the bot connects (not ready yet though) """
 
-        print('connected to discord')
+        self.logger.info('connected to discord')
         await self.set_presence()
 
 
     async def on_ready(self):
         """ What to do when the bot is ready for action """
 
-        print(f'logged in as {self.user}')
+        self.logger.info(f'logged in as {self.user}')
 
 
     async def on_message(self, message):
@@ -121,7 +125,7 @@ class Wegbot(commands.AutoShardedBot):
         except commands.errors.BadArgument as ex:
             await ctx.send(f"{ex} – Use `;help` for help.")
         else:
-            print('on_command_error, but no error?')
+            self.logger.warning('on_command_error, but no error?')
 
 
     def run(self):

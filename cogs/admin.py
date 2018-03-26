@@ -38,7 +38,7 @@ class Admin:
         """ Attempt to reload all extensions """
 
         starting_count = len(tuple(self.bot.extensions))
-        print(f'reloading {starting_count} extensions... ', end='')
+        self.bot.logger.info(f'reloading {starting_count} extensions')
 
         failed = []
 
@@ -47,10 +47,9 @@ class Admin:
                 failed.append(ext)
 
         if failed:
-            how_many = 'ALL' if len(failed) == starting_count else len(failed)
-            print(f'{how_many} FAILED')
+            self.bot.logger.warning(f'failed to reload extension(s): {", ".join(failed)}')
         else:
-            print('OK')
+            self.bot.logger.info('all extensions reloaded OK')
 
         return failed
 
@@ -83,21 +82,21 @@ class Admin:
             if not ext_name.startswith('cogs.'):
                 ext_name = f"cogs.{ext_name}"
 
-            print(f'reloading extension {ext_name:.<15}... ', end='')
+            self.bot.logger.info(f'reloading extension {ext_name}')
             self.bot.unload_extension(ext_name)
             self.bot.load_extension(ext_name)
 
         except ModuleNotFoundError:
-            print('NOT FOUND')
+            self.bot.logger.warning(f'unable to reload extension {ext_name}: {ex}')
             await ctx.send(f"No such extension: `{ext_name.replace('cogs.', '')}`")
         except discord.ClientException as ex:
-            print(f'BAD: {ex}')
+            self.bot.logger.warning(f'failed to reload extension {ext_name}: {ex}')
             await ctx.send(f"I'm having trouble loading `{ext_name}`, {ctx.author.mention}. Check the logs.")
         except Exception as ex:
-            print(f'FAILED: {ex}')
+            self.bot.logger.warning(f'failed to reload extension {ext_name}: {ex}')
             await ctx.send(f"Failed to reload `{ext_name}` - {ex}")
         else:
-            print('OK')
+            self.bot.logger.info(f'successfully reloaded extension {ext_name}')
             await ctx.send(f"Reloaded extension: `{ext_name.replace('cogs.', '')}`")
 
 
@@ -106,7 +105,7 @@ class Admin:
     async def bye(self, ctx):
         """ Kill the bot """
 
-        print(f"quit (requested by {str(ctx.author)})")
+        self.bot.logger.critical(f"quit requested by {str(ctx.author)}")
         goodbye = _random.goodbye()
         await ctx.send(goodbye)
         await self.bot.logout()

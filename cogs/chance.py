@@ -28,6 +28,7 @@ class Chance:
 
             Coming soon: support for modifiers """
 
+        self.bot.logger.info(f'{ctx.author} rolls {dice}')
         await ctx.trigger_typing()
 
         try:
@@ -40,18 +41,11 @@ class Chance:
             count = int(parts[0]) if parts[0] else 1
             sides = int(parts[1])
 
-            results = []
+            results = [ random.randint(1, sides) for i in range(count) ]
+            total = sum(results)
 
-            index = 0
-            while index < count:
-                results.append(random.randint(1, sides))
-                index += 1
-
-            # TODO what a fuckin hack. all of this.
-
-            total = 0
-            for res in results:
-                total += res
+            self.bot.logger.info(f'{ctx.author} rolls {dice}: {", ".join(results)}')
+            self.bot.logger.info(f'{ctx.author} rolls {total} on {dice}')
 
             description = f'{ctx.author.mention} rolled **{total}** on **{count}d{sides}**.'
             if count > 1:
@@ -62,17 +56,19 @@ class Chance:
             await ctx.send(embed=embedded)
 
         except WegbotException as ex:
+            self.bot.logger.warning(f'invalid roll "{dice}" from {ctx.author}')
             await ctx.send(f"{ex.message}, {ctx.author.mention}.")
 
         except Exception as ex:
+            self.bot.logger.warning(f'unexpected error rolling {dice}: {ex}')
             await ctx.send("Something went wrong.")
-            raise ex
 
     @commands.command(hidden=False)
     async def flip(self, ctx, count='1'):
         """ Flip a coin.
             Flip multiple coins, I don't give a fuck """
 
+        self.bot.logger.info(f'{ctx.author} flips {count}')
         await ctx.trigger_typing()
 
         try:
@@ -101,9 +97,11 @@ class Chance:
             await ctx.send(embed=embedded)
 
         except WegbotException as ex:
+            self.bot.logger.warning(f"can't flip {count}: {ex}")
             await ctx.send(f"{ex.message}, {ctx.author.mention}.")
         except Exception as ex:
-            raise ex
+            self.bot.logger.warning(f"unexpected error flipping {count}: {ex}")
+            await ctx.send(f"Unexpected error while flipping {count}. Check the logs.")
 
 
 

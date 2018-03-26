@@ -44,9 +44,9 @@ class Audio:
             self.voice = await channel.connect()
         except discord.ClientException:
             await self.voice.move_to(channel)
-            print(f'moved to voice channel: {str(channel)}')
+            self.bot.logger.info(f'moved to voice channel: {str(channel)}')
         else:
-            print(f'joined voice channel: {str(channel)}')
+            self.bot.logger.info(f'joined voice channel: {str(channel)}')
 
 
     async def disconnect_voice(self):
@@ -55,7 +55,7 @@ class Audio:
         if self.voice is None:
             return
 
-        print(f'disconnecting from voice channel: {str(self.voice.channel)}')
+        self.bot.logger.info(f'disconnecting from voice channel: {str(self.voice.channel)}')
         await self.voice.disconnect(force=True)
         self.voice = None
 
@@ -118,7 +118,7 @@ class Audio:
             clip = get_clip(clip_name)
             if clip is None:
                 raise WegbotException(f"I don't know any clips called '{clip_name}'")
-            
+
             # TODO add clip to queue
             # maybe have another loop playing from the queue
             # anyway here's an exception

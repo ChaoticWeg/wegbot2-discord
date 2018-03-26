@@ -14,6 +14,7 @@ async def purge(self, ctx):
 
     ** Unfortunately, due to Discord API limitations, only messages from within the last 14 days can be purged. Because fuck you."""
 
+    self.bot.logger.info(f'{ctx.author} request purge #{ctx.channel}')
     await ctx.trigger_typing()
 
     try:
@@ -25,7 +26,7 @@ async def purge(self, ctx):
 
         orig_num_messages = len(messages)
 
-        print(f'purging {orig_num_messages} messages from #{str(ctx.channel)}... ', end='')
+        self.bot.logger.info(f'purging {orig_num_messages} messages from {str(ctx.channel)}')
 
         while messages:
             # delete the first 100 messages if we need to, otherwise just delete them all
@@ -37,25 +38,25 @@ async def purge(self, ctx):
 
         await ctx.send(f"Purged {orig_num_messages} messages from {ctx.channel.mention} at the behest of {ctx.author.mention}.")
 
-    except discord.ClientException:
-        print('TOO MANY')
+    except discord.ClientException as ex:
+        self.bot.logger.warning('tried to purge too many messages (or other ClientException)')
+        self.bot.logger.warning(ex)
+
         blame = ctx.bot.get_user(int(os.getenv('DISCORD_OWNER'))).mention
         await ctx.send(f"Tried to purge too many messages at once! {blame} fucked up.")
 
     except discord.Forbidden:
-        print('FORBIDDEN')
+        self.bot.logger.warning(f"{ctx.author} tried to purge a channel we don't have access to ({ctx.channel})")
         await ctx.send(f"I don't have permission to purge this channel, {ctx.author.mention}.")
 
     except discord.HTTPException as ex:
-        print('FAILED')
+        self.bot.logger.warning(f'failed to purge {ctx.channel}: {ex}')
         await ctx.send("Something went wrong. Check the logs.")
-        print(f'*** caught an HTTPException while trying to purge #{str(ctx.channel)}')
-        print(ex)
 
     except Exception as ex:
-        print('OWNED ONLINE')
+        self.bot.logger.warning(f'unexpected error purging {ctx.channel}: {ex}')
         await ctx.send("Purge failed spectacularly. Check the logs.")
         raise ex
 
     else:
-        print('OK')
+        self.bot.logger.info(f'successfully purged {ctx.channel}')

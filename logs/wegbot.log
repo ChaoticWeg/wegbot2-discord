@@ -1,0 +1,6 @@
+2018-25-03 20:01:18 [INFO] logging in using static token
+2018-25-03 20:01:19 [INFO] Shard ID 0 has sent the IDENTIFY payload.
+2018-25-03 20:01:19 [INFO] Shard ID 0 has connected to Gateway: gateway-prd-main-qrzk, discord-sessions-prd-1-5 (Session ID: 738f0b5269c3993d149989390fd0115d).
+2018-25-03 20:05:11 [INFO] Websocket closed with 1000 (), cannot reconnect.
+2018-25-03 20:05:11 [INFO] Cleaning up event loop.
+2018-25-03 20:05:11 [INFO] Cleaning up after 10 tasks
