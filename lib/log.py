@@ -7,7 +7,7 @@ def get_wegbot_logger():
     logger = logging.getLogger("Wegbot")
     logger.setLevel(logging.INFO)
 
-    formatter = logging.Formatter(FORMAT)
+    formatter = logging.Formatter(FORMAT, DATE_FMT)
 
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.INFO)
